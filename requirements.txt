@@ -1,5 +1,4 @@
-transformers
+pymupdf
 pandas
-scikit-learn
-matplotlib
-numpy
+unidecode
+transformers
