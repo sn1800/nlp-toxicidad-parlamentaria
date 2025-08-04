@@ -8,6 +8,7 @@ Clasificar automáticamente intervenciones parlamentarias como tóxicas o no tó
 
 ## 🗂️ Estructura del Proyecto
 nlp-toxicidad-parlamentaria/
+```
 ├── data/
 │ ├── raw/ # CSV y PDF originales
 │ └── processed/ # Intervenciones limpias
@@ -17,7 +18,7 @@ nlp-toxicidad-parlamentaria/
 ├── README.md
 ├── requirements.txt
 └── .gitignore
-
+```
 ## 🔄 Pipeline hasta ahora
 
 1. **Extracción del texto**  
