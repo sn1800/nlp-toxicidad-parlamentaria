@@ -33,9 +33,10 @@ nlp-toxicidad-parlamentaria/
    - Archivo listo: `intervenciones_2020_17.csv` (almacenado en `data/processed/`)
 
 ## ⚙️ Requisitos técnicos
-
+```
+bash
 pip install transformers pandas
-
+```
 ## 🚧 Próximo paso
 Aplicar un modelo de clasificación de toxicidad en español usando Hugging Face.
 
