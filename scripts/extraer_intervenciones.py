@@ -5,8 +5,8 @@ from typing import List, Dict
 from unidecode import unidecode
 
 # Config
-PDF_PATH = sys.argv[1] if len(sys.argv) > 1 else "slo-2020-17.pdf"
-OUT_CSV = sys.argv[2] if len(sys.argv) > 2 else "intervenciones_2020_17.csv"
+PDF_PATH = sys.argv[1] if len(sys.argv) > 1 else "../data/raw/slo-2020-17.pdf"
+OUT_CSV = sys.argv[2] if len(sys.argv) > 2 else "../data/processed/intervenciones_2020_17.csv"
 
 # 1. Extraer texto
 doc = fitz.open(PDF_PATH)

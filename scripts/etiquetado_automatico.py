@@ -1,24 +1,27 @@
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from transformers import pipeline
 import pandas as pd
 
-# Cargar modelo y tokenizer
-modelo = "mrm8488/bert-spanish-cased-finetuned-toxic-comments"
-tokenizer = AutoTokenizer.from_pretrained(modelo)
-model = AutoModelForSequenceClassification.from_pretrained(modelo)
+# --- Configuración ---
+modelo = "PlanTL-GOB-ES/roberta-base-bne-toxicity"
+INPUT_CSV = "data/processed/intervenciones_2020_17.csv"
+OUTPUT_CSV = "data/processed/intervenciones_etiquetadas.csv"
 
-# Crear pipeline
-clasificador = pipeline("text-classification", model=model, tokenizer=tokenizer)
+# --- Cargar clasificación ---
+clasificador = pipeline("text-classification", model="PlanTL-GOB-ES/roberta-base-bne-toxicity")
+# --- Cargar datos ---
+df = pd.read_csv(INPUT_CSV, encoding="utf-8")
 
-# Cargar tu CSV
-df = pd.read_csv("intervenciones_2020_17.csv")
+# --- Etiquetado ---
+def obtener_etiquetas(texto):
+    # Procesar hasta 512 tokens (máximo)
+    res = clasificador(texto[:512])
+    # Extraer solo etiquetas por encima de cierto umbral (opcional)
+    etiquetas = [r["label"] for r in res if r["score"] >= 0.5]
+    return etiquetas if etiquetas else ["NOT_TOXIC"]
 
-# Limpiar filas vacías o muy cortas
-df = df[df["text"].notna() & (df["text"].str.len() > 20)]
+df["toxicity_labels"] = df["text"].apply(obtener_etiquetas)
 
-# Etiquetar (puedes reducir el número de ejemplos en pruebas)
-df["toxicity_label"] = df["text"].apply(lambda x: clasificador(x[:512])[0]["label"])
-
-# Guardar resultado
-df.to_csv("intervenciones_etiquetadas.csv", index=False, encoding="utf-8")
-print("✅ Archivo 'intervenciones_etiquetadas.csv' generado con etiquetas de toxicidad.")
+# --- Guardar resultado ---
+df.to_csv(OUTPUT_CSV, index=False, encoding="utf-8")
+print(f"✅ Etiquetado completo y guardado en: {OUTPUT_CSV}")
+print(df[["role", "speaker", "toxicity_labels"]].head(10).to_string())
